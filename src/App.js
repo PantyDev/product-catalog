@@ -1,77 +1,67 @@
-import React, {useMemo, useState, useRef} from 'react';
+import React, {useMemo, useEffect, useState, useRef} from 'react';
+import PostService from './API/PostService';
 import ClassCounter from './components/ClassCounter';
 import Counter from './components/Counter';
+import { PostFilter } from './components/PostFilter';
 import PostForm from './components/PostForm';
 import PostItem from './components/PostItem';
 import PostList from './components/PostList';
 import { MyButton } from './components/UI/Button/MyButton';
 import { MyInput } from './components/UI/Input/MyInput';
+import { Loader } from './components/UI/Loader/Loader';
+import { MyModal } from './components/UI/Modal/MyModal';
 import MySelect from './components/UI/Select/MySelect';
+import { usePosts } from './hooks/usePosts';
 import './styles/App.css';
 
 function App() {
-    const [posts, setPosts] = useState([
-        {id: 1, title: 'zz 1', body: 'aa'},
-        {id: 2, title: 'xx 2', body: 'bb'},
-        {id: 3, title: 'ww 3', body: 'cc'}
-    ])
-    const [selectedSort, setSelectedSort] = useState('');
-    const [searchQuery, setSearchQuery] = useState('');
+    const [posts, setPosts] = useState([])
+    const [filter, setFilter] = useState({sort: '', query: ''})
+    const [modal, setModal] = useState(false);
+    const sotredAndSeachedPosts = usePosts(posts, filter.sort, filter.query)
+    const [isPostsLoading, setIsPostsLoading] = useState(false);
 
-
-
-    const sortedPosts = useMemo(()=> {
-        if(selectedSort)
-        {
-            return [...posts].sort((a, b) => a[selectedSort].localeCompare(b[selectedSort]));
-        }
-        return posts;
-    }, [selectedSort, posts]);
-
-    const sotredAndSeachedPosts = useMemo(() => {
-        return sortedPosts.filter(post => post.title.toLowerCase().includes(searchQuery))
-    }, [searchQuery, sortedPosts])
+    useEffect(() => {
+        fetchPosts();
+    }, [])
 
     const createPost = (newPost) => {
         setPosts([...posts, newPost])
+        setModal(false);
+    }
+
+    async function fetchPosts() {
+        setIsPostsLoading(true);
+        setTimeout(async () => {
+            const posts = await PostService.getAll();
+            setPosts(posts);
+            setIsPostsLoading(false);
+        }, 1000)
+        
     }
 
     const removePost = (post) => {
         setPosts(posts.filter(p => p.id !== post.id))
     }
-
-    const sortPosts = (sort) => {
-        setSelectedSort(sort);
-        console.log(sort);
-        
-    }
     
   return (
     <div className="App">
-        <PostForm create={createPost}/>
-        <hr style={{margin: '15px 0'}} />
-        <div>
-            <MyInput 
-                value={searchQuery}
-                onChange={e => setSearchQuery(e.target.value)}
-                placeholder="Поиск..."
-            />
-            <MySelect
-                value={selectedSort}
-                onChange={sortPosts}
-                defaultValue='Сортировка'
-                options={[ 
-                    {value: 'title', name: 'По названию'},
-                    {value: 'body', name: 'По описанию'}    
-                ]}
-            />
-        </div>
-        {
-            sotredAndSeachedPosts.length
-            ? <PostList remove={removePost} posts={sotredAndSeachedPosts} title="Посты про JS"/> 
-            : <h1 style={{textAlign:'center'}}>Посты не найдены!</h1>
-        }
+        <MyButton onClick={()=> fetchPosts()}>Test</MyButton>
+        <MyButton style={{marginTop: 30}} onClick={() => setModal(true)}>Создать пользователя</MyButton>
+        <MyModal visible={modal} setVisible={setModal}>
+            <PostForm create={createPost} />
+        </MyModal>
         
+        <hr style={{margin: '15px 0'}} />
+        <PostFilter 
+            filter={filter} 
+            setFilter={setFilter} />
+        
+        {
+            isPostsLoading 
+            ? <div style={{display: "flex", justifyContent: 'center', marginTop: 50}}><Loader /></div>
+            : <PostList remove={removePost} posts={sotredAndSeachedPosts} title="Посты про JS"/>
+        } 
     </div>
   );
 }
