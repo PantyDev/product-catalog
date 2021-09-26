@@ -5,7 +5,7 @@ import { MyInput } from './UI/Input/MyInput';
 
 
 const ProductAddForm = ({create}) => {
-    const [product, setProduct] = useState({id: '', name: '', description: '', cost: 0, discount: '', discountDate: getTimeFormat()});
+    const [product, setProduct] = useState({id: '', name: '', description: '', cost: 0, discount: 0, discountDate: getTimeFormat()});
 
     const [photo, setPhoto] = useState([]);
     const [photoSize, setPhotoSize] = useState([]);
@@ -76,7 +76,7 @@ const ProductAddForm = ({create}) => {
                 ...product, photo: photo[0].target.files[0]
             }
             create(newProduct); 
-            setProduct({name: '', description: '', cost: 0, discount: '', discountDate: getTimeFormat()});
+            setProduct({name: '', description: '', cost: 0, discount: 0, discountDate: getTimeFormat()});
             document.getElementById("photoInput").value = "";
         }
     }
@@ -138,7 +138,7 @@ const ProductAddForm = ({create}) => {
 
             <MyInput 
                 value={product.discount}
-                onChange={ e => setProduct({...product, discount: e.target.value}) }
+                onChange={ e => setProduct({...product, discount: Number (e.target.value)}) }
                 type="number"
                 placeholder="Процент скидки" 
             />
