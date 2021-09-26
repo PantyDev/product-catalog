@@ -5,7 +5,7 @@ import { MyInput } from './UI/Input/MyInput';
 
 
 const ProductAddForm = ({create}) => {
-    const [product, setProduct] = useState({id: '', name: '', description: '', cost: '', discount: '', discountDate: getTimeFormat()});
+    const [product, setProduct] = useState({id: '', name: '', description: '', cost: 0, discount: '', discountDate: getTimeFormat()});
 
     const [photo, setPhoto] = useState([]);
     const [photoSize, setPhotoSize] = useState([]);
@@ -76,7 +76,7 @@ const ProductAddForm = ({create}) => {
                 ...product, photo: photo[0].target.files[0]
             }
             create(newProduct); 
-            setProduct({name: '', description: '', cost: '', discount: '', discountDate: getTimeFormat()});
+            setProduct({name: '', description: '', cost: 0, discount: '', discountDate: getTimeFormat()});
             document.getElementById("photoInput").value = "";
         }
     }
@@ -130,7 +130,7 @@ const ProductAddForm = ({create}) => {
 
             <MyInput 
                 value={product.cost}
-                onChange={ e => setProduct({...product, cost: e.target.value}) }
+                onChange={ e => setProduct({...product, cost: Number (e.target.value)}) }
                 type="number"
                 placeholder="Цена" 
             />
