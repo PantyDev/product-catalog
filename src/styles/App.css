@@ -1,4 +1,9 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@300&display=swap');
+
+
 * {
+    font-family: 'Montserrat Alternates', sans-serif;;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -9,29 +14,38 @@
     justify-content: center;
 }
 .App {
-    width: 800px;
+    width: 1000px;
 }
-.post {
+.product  {
     display: flex;
     padding: 15px;
-    border: 2px solid teal;
-    margin-top: 15px;
+    flex-direction: column;
+    /* border: 2px solid teal; */
+    background-color: rgb(248, 248, 248);
+    margin: 15px;
+    width: 300px;
     justify-content: space-between;
-    align-items: center;
+    /* align-items: center; */
+    -webkit-box-shadow: 0px 0px 31px 4px rgba(26, 44, 58, 0.32);
+    -moz-box-shadow: 0px 0px 31px 4px rgba(26, 44, 58, 0.32);
+    box-shadow: 0px 0px 31px 4px rgba(26, 44, 58, 0.32);
+    word-break:break-word;
 }
-.post-enter {
+
+
+.product-enter {
     transform: translateX(-350px);
     opacity: 0;
 }
-.post-enter-active {
+.product-enter-active {
     opacity: 1;
     transform: translateX(0px);
     transition: all 500ms ease-in;
 }
-.post-exit {
+.product-exit {
     opacity: 1;
 }
-.post-exit-active {
+.product-exit-active {
     transform: translateX(-350px);
     opacity: 0;
     transition: all 500ms ease-in;

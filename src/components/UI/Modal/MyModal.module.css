@@ -6,13 +6,17 @@
     left: 0;
     display: none;
     background: rgba(0, 0, 0, 0.5);
+    
 }
 
 .myModalContent {
     padding: 25px;
     background: white;
     border-radius: 16px;
-    min-width: 250px;
+    width: 900px;
+    -webkit-box-shadow: 0px 0px 31px 4px rgba(26, 44, 58, 0.32);
+    -moz-box-shadow: 0px 0px 31px 4px rgba(26, 44, 58, 0.32);
+    box-shadow: 0px 0px 31px 4px rgba(26, 44, 58, 0.32);
 }
 
 .myModal.active {

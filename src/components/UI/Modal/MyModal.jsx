@@ -1,7 +1,7 @@
 import React from 'react'
 import cl from './MyModal.module.css';
 
-export const MyModal = ({children, visible, setVisible}) => {
+const MyModal = ({children, visible, setVisible}) => {
 
     const rootClasses = [cl.myModal];
     if(visible) {
@@ -16,3 +16,4 @@ export const MyModal = ({children, visible, setVisible}) => {
         </div>
     )
 }
+export default MyModal;
